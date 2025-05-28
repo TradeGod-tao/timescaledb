@@ -1,0 +1,31 @@
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg17
+    container_name: timescaledb
+    environment:
+      - POSTGRES_PASSWORD
+    command:
+      - postgres
+      - "-c"
+      - "shared_buffers=1024MB"
+      - "-c"
+      - "work_mem=16MB"
+      - "-c"
+      - "effective_cache_size=3072MB"
+      - "-c"
+      - "max_parallel_workers_per_gather=2"
+      - "-c"
+      - "max_parallel_workers=3"
+    ports:
+      - "5432:5432"
+    volumes:
+      - tsdb_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+volumes:
+  tsdb_data:
+
+networks:
+  my_network:
+    external: true
