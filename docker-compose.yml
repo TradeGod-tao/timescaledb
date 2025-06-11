@@ -29,6 +29,8 @@ services:
       - "min_wal_size=1GB"
       - "-c"
       - "max_wal_size=2GB"
+      - "-c"
+      - "listen_addresses=*"
     ports:
       - "${DB_PORT}:5432"
     volumes:
