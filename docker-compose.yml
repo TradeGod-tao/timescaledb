@@ -7,7 +7,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_DB
     shm_size: 1gb
-        command:
+    command:
       - postgres
       - "-c"
       - "shared_buffers=1024MB"
