@@ -1,10 +1,13 @@
 services:
-  timescaledb:
-    image: timescale/timescaledb:latest-pg17
-    container_name: timescaledb
+  timescaledb-squid:
+    image: stansmith908/timescaledb-custom:latest
+    container_name: timescaledb-squid
     environment:
       - POSTGRES_PASSWORD
-    command:
+      - POSTGRES_USER
+      - POSTGRES_DB
+    shm_size: 1gb
+        command:
       - postgres
       - "-c"
       - "shared_buffers=1024MB"
@@ -13,11 +16,21 @@ services:
       - "-c"
       - "effective_cache_size=3072MB"
       - "-c"
+      - "max_connections=100"
+      - "-c"
       - "max_parallel_workers_per_gather=2"
       - "-c"
-      - "max_parallel_workers=3"
+      - "max_parallel_workers=2"
+      - "-c"
+      - "maintenance_work_mem=256MB"
+      - "-c"
+      - "wal_buffers=16MB"
+      - "-c"
+      - "min_wal_size=1GB"
+      - "-c"
+      - "max_wal_size=2GB"
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:5432"
     volumes:
       - tsdb_data:/var/lib/postgresql/data
     networks:
